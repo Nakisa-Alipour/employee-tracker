@@ -15,6 +15,8 @@ const db = mysql.createConnection(
 
   connection.connect(function(err) {
     if (err) throw err;
+    console.log('Connected to the employee_db database.');
+    userPrompts();
   });
 
 
@@ -40,4 +42,58 @@ function userPrompts() {
             "Quit"
         ]
     })
+
+    .then(answer => {
+        switch (answer.userChoice) {
+          case 'View All Departments':
+            viewAllDepartments();
+            break;
+          case 'View All Roles':
+            viewAllRoles();
+            break;
+          case 'View All Employees':
+            viewAllEmployees();
+            break;
+          case 'View Employees By Manager':
+            viewEmployeesByManager();
+            break;
+          case 'View Employees By Department':
+            viewEmployeesByDepartment();
+            break;
+          case 'Add Department':
+            addDepartment();
+            break;
+          case 'Add Role':
+            addRole();
+            break;
+          case 'Add Employee':
+            addEmployee();
+            break;
+          case 'Update Employee Role':
+            updateEmployeeRole();
+            break;
+          case 'Update Employee Manager':
+            updateEmployeeManager();
+            break;
+          case 'Delete Department':
+            deleteDepartment();
+            break;
+          case 'Delete Role':
+            deleteRole();
+            break;
+          case 'Delete Employee':
+            deleteEmployee();
+            break;
+          case 'Quit':
+            console.log('Exiting the application...');
+            db.end();
+            break;
+          default:
+            console.log('Invalid choice. Please try again.');
+            userPrompts();
+        }
+      });
+  }
 }
+
+
