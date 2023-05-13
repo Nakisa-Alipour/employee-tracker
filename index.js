@@ -35,10 +35,6 @@ function userPrompts() {
             "Add Role",
             "Add Employee",
             "Update Employee Role",
-            "Update Employee Manager",
-            "Delete Department", 
-            "Delete Role",
-            "Delete Employee",
             "Quit"
         ]
     })
@@ -170,6 +166,52 @@ function addRole() {
                 console.log('Role added successfully!');
                 userPrompts();
             });
+        });
+    });
+}
+
+
+function addEmployee() {
+    db.query('SELECT * FROM role', (err, roles) => {
+        if (err) throw err;
+        inquirer
+        .prompt([
+          {
+            type: 'input',
+            name: 'firstName',
+            message: "Enter the employee's first name:"
+          },
+          {
+            type: 'input',
+            name: 'lastName',
+            message: "Enter the employee's last name:"
+          },
+          {
+            type: 'list',
+            name: 'roleId',
+            message: "Select the employee's role:",
+            choices: roles.map(role => ({
+              name: role.title,
+              value: role.id
+            }))
+          },
+          {
+            type: 'input',
+            name: 'managerId',
+            message: "Enter the employee's manager ID:"
+          }
+        ])
+
+        .then(answers => {
+          db.query(
+            'INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)',
+            [answers.firstName, answers.lastName, answers.roleId, answers.managerId],
+            (err, result) => {
+              if (err) throw err;
+              console.log('Employee added successfully!');
+              userPrompts();
+            }
+          );
         });
     });
 }
