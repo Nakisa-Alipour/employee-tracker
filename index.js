@@ -125,8 +125,27 @@ function viewAllEmployees() {
         if (err) throw err;
         console.table(results);
         userPrompts();
-      }
+      });
+}
+
+
+function addDepartment() {
+    inquirer.prompt({
+        type: 'input',
+        name: 'departmentName',
+        message: 'Enter the name of the department:'
+    })
+    .then(answer => {
+    db.query(
+        'INSERT INTO department (name) VALUES (?)',
+        [answer.departmentName],
+        (err, result) => {
+        if (err) throw err;
+        console.log('Department added successfully!');
+        userPrompts();
+        }
     );
-  }
+    });
+}
 
 
