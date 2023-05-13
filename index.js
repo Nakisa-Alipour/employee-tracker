@@ -72,18 +72,6 @@ function userPrompts() {
           case 'Update Employee Role':
             updateEmployeeRole();
             break;
-          case 'Update Employee Manager':
-            updateEmployeeManager();
-            break;
-          case 'Delete Department':
-            deleteDepartment();
-            break;
-          case 'Delete Role':
-            deleteRole();
-            break;
-          case 'Delete Employee':
-            deleteEmployee();
-            break;
           case 'Quit':
             console.log('Exiting the application...');
             db.end();
@@ -145,6 +133,44 @@ function addDepartment() {
         userPrompts();
         }
     );
+    });
+}
+
+
+function addRole() {
+    db.query('SELECT * FROM department', (err, departments) => {
+        if (err) throw err;
+        inquirer
+        .prompt([
+          {
+            type: 'input',
+            name: 'roleTitle',
+            message: 'Enter the title of the role:'
+          },
+          {
+            type: 'input',
+            name: 'roleSalary',
+            message: 'Enter the salary for the role:'
+          },
+          {
+            type: 'list',
+            name: 'departmentId',
+            message: 'Select the department for the role:',
+            choices: departments.map(department => ({
+              name: department.name,
+              value: department.id
+            }))
+          }
+        ])
+        .then(answers => {
+            db.query('INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)',
+            [answers.roleTitle, answers.roleSalary, answers.departmentId],
+            (err, result) => {
+                if (err) throw err;
+                console.log('Role added successfully!');
+                userPrompts();
+            });
+        });
     });
 }
 
