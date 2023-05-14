@@ -1,5 +1,5 @@
-const inquirer = require('inquirer');
-const mysql = require('./db');
+const { prompt } = require('inquirer');
+//const mysql = require('./db');
 
 const mysql = require('mysql2');
 
@@ -7,17 +7,17 @@ const db = mysql.createConnection(
     {
       host: 'localhost',
       user: 'root',
-      password: '',
+      password: 'NakiSql#77',
       database: 'employee_db'
     },
     console.log(`Connected to the books_db database.`)
-  );
+);
 
-  connection.connect(function(err) {
+db.connect(function(err) {
     if (err) throw err;
     console.log('Connected to the employee_db database.');
     userPrompts();
-  });
+});
 
 
 function userPrompts() {
@@ -25,7 +25,7 @@ function userPrompts() {
         type: "list",
         name: "userChoice",
         message: "What would you like to do?",
-        choice: [
+        choices: [
             "View All Departments",
             "View All Roles",
             "View All Employees",
@@ -155,7 +155,9 @@ function addRole() {
             choices: departments.map(department => ({
               name: department.name,
               value: department.id
-            }))
+            })),
+            // Add the following line if you want to make the selection required
+            validate: input => (input ? true : 'Please select a department.')
           }
         ])
         .then(answers => {
