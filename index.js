@@ -217,3 +217,45 @@ function addEmployee() {
 }
 
 
+function updateEmployeeRole() {
+    db.query('SELECT * FROM employee', (err, employees) => {
+      if (err) throw err;
+      db.query('SELECT * FROM role', (err, roles) => {
+        if (err) throw err;
+        inquirer
+          .prompt([
+            {
+              type: 'list',
+              name: 'employeeId',
+              message: 'Select the employee to update:',
+              choices: employees.map(employee => ({
+                name: `${employee.first_name} ${employee.last_name}`,
+                value: employee.id
+              }))
+            },
+            {
+              type: 'list',
+              name: 'roleId',
+              message: 'Select the new role for the employee:',
+              choices: roles.map(role => ({
+                name: role.title,
+                value: role.id
+              }))
+            }
+          ])
+          .then(answers => {
+            db.query(
+              'UPDATE employee SET role_id = ? WHERE id = ?',
+              [answers.roleId, answers.employeeId],
+              (err, result) => {
+                if (err) throw err;
+                console.log('Employee role updated successfully!');
+                userPrompts();
+              }
+            );
+          });
+      });
+    });
+  }
+
+
