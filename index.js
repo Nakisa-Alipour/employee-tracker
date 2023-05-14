@@ -29,8 +29,6 @@ function userPrompts() {
             "View All Departments",
             "View All Roles",
             "View All Employees",
-            "View Employees By Manager",
-            "View Employees By Department",
             "Add Department",
             "Add Role",
             "Add Employee",
@@ -49,12 +47,6 @@ function userPrompts() {
             break;
           case 'View All Employees':
             viewAllEmployees();
-            break;
-          case 'View Employees By Manager':
-            viewEmployeesByManager();
-            break;
-          case 'View Employees By Department':
-            viewEmployeesByDepartment();
             break;
           case 'Add Department':
             addDepartment();
@@ -114,30 +106,24 @@ function viewAllEmployees() {
 
 
 function addDepartment() {
-    inquirer.prompt({
-        type: 'input',
-        name: 'departmentName',
-        message: 'Enter the name of the department:'
-    })
-    .then(answer => {
-    db.query(
-        'INSERT INTO department (name) VALUES (?)',
-        [answer.departmentName],
-        (err, result) => {
+    prompt({
+      type: 'input',
+      name: 'departmentName',
+      message: 'Enter the name of the department:'
+    }).then(answer => {
+      db.query('INSERT INTO department (name) VALUES (?)', [answer.departmentName], (err, result) => {
         if (err) throw err;
         console.log('Department added successfully!');
         userPrompts();
-        }
-    );
+      });
     });
-}
+  }
 
 
 function addRole() {
     db.query('SELECT * FROM department', (err, departments) => {
         if (err) throw err;
-        inquirer
-        .prompt([
+        prompt([
           {
             type: 'input',
             name: 'roleTitle',
@@ -176,8 +162,7 @@ function addRole() {
 function addEmployee() {
     db.query('SELECT * FROM role', (err, roles) => {
         if (err) throw err;
-        inquirer
-        .prompt([
+        prompt([
           {
             type: 'input',
             name: 'firstName',
@@ -224,8 +209,7 @@ function updateEmployeeRole() {
       if (err) throw err;
       db.query('SELECT * FROM role', (err, roles) => {
         if (err) throw err;
-        inquirer
-          .prompt([
+        prompt([
             {
               type: 'list',
               name: 'employeeId',
@@ -261,3 +245,5 @@ function updateEmployeeRole() {
   }
 
 
+
+  
