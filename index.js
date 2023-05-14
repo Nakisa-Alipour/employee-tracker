@@ -119,131 +119,117 @@ function addDepartment() {
     });
   }
 
-
 function addRole() {
     db.query('SELECT * FROM department', (err, departments) => {
         if (err) throw err;
         prompt([
-          {
-            type: 'input',
-            name: 'roleTitle',
-            message: 'Enter the title of the role:'
-          },
-          {
-            type: 'input',
-            name: 'roleSalary',
-            message: 'Enter the salary for the role:'
-          },
-          {
-            type: 'list',
-            name: 'departmentId',
-            message: 'Select the department for the role:',
-            choices: departments.map(department => ({
-              name: department.name,
-              value: department.id
+            {
+                type: 'input',
+                name: 'roleTitle',
+                message: 'Enter the title of the role:'
+            },
+            {
+                type: 'input',
+                name: 'roleSalary',
+                message: 'Enter the salary for the role:'
+            },
+            {
+                type: 'list',
+                name: 'departmentId',
+                message: 'Select the department for the role:',
+                choices: departments.map(department => ({
+                name: department.name,
+                value: department.id
             })),
-            // Add the following line if you want to make the selection required
             validate: input => (input ? true : 'Please select a department.')
+        }
+    ]).then(answers => {
+        db.query('INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)',
+          [answers.roleTitle, answers.roleSalary, answers.departmentId], (err, result) => 
+          {
+            if (err) throw err;
+            console.log('Role added successfully!');
+            userPrompts();
           }
-        ])
-        .then(answers => {
-            db.query('INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)',
-            [answers.roleTitle, answers.roleSalary, answers.departmentId],
+        );
+    });
+});
+}
+  
+function addEmployee() {
+    db.query('SELECT * FROM role', (err, roles) => {
+        if (err) throw err;
+        prompt([
+            {
+                type: 'input',
+                name: 'firstName',
+                message: "Enter the employee's first name:"
+            },
+            {
+                type: 'input',
+                name: 'lastName',
+                message: "Enter the employee's last name:"
+            },
+            {
+                type: 'list',
+                name: 'roleId',
+                message: "Select the employee's role:",
+                choices: roles.map(role => ({
+                name: role.title,
+                value: role.id
+            }))
+            },
+            {
+                type: 'input',
+                name: 'managerId',
+                message: "Enter the employee's manager ID:"
+            }
+        ]).then(answers => {
+            db.query('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)',
+            [answers.firstName, answers.lastName, answers.roleId, answers.managerId],
             (err, result) => {
                 if (err) throw err;
-                console.log('Role added successfully!');
+                console.log('Employee added successfully!');
                 userPrompts();
             });
         });
     });
 }
-
-
-function addEmployee() {
-    db.query('SELECT * FROM role', (err, roles) => {
-        if (err) throw err;
-        prompt([
-          {
-            type: 'input',
-            name: 'firstName',
-            message: "Enter the employee's first name:"
-          },
-          {
-            type: 'input',
-            name: 'lastName',
-            message: "Enter the employee's last name:"
-          },
-          {
-            type: 'list',
-            name: 'roleId',
-            message: "Select the employee's role:",
-            choices: roles.map(role => ({
-              name: role.title,
-              value: role.id
-            }))
-          },
-          {
-            type: 'input',
-            name: 'managerId',
-            message: "Enter the employee's manager ID:"
-          }
-        ])
-
-        .then(answers => {
-          db.query(
-            'INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)',
-            [answers.firstName, answers.lastName, answers.roleId, answers.managerId],
-            (err, result) => {
-              if (err) throw err;
-              console.log('Employee added successfully!');
-              userPrompts();
-            }
-          );
-        });
-    });
-}
-
-
+  
 function updateEmployeeRole() {
     db.query('SELECT * FROM employee', (err, employees) => {
-      if (err) throw err;
-      db.query('SELECT * FROM role', (err, roles) => {
         if (err) throw err;
-        prompt([
-            {
-              type: 'list',
-              name: 'employeeId',
-              message: 'Select the employee to update:',
-              choices: employees.map(employee => ({
-                name: `${employee.first_name} ${employee.last_name}`,
-                value: employee.id
-              }))
-            },
-            {
-              type: 'list',
-              name: 'roleId',
-              message: 'Select the new role for the employee:',
-              choices: roles.map(role => ({
-                name: role.title,
-                value: role.id
-              }))
+        db.query('SELECT * FROM role', (err, roles) => {
+            if (err) throw err;
+            prompt([
+                {
+                    type: 'list',
+                    name: 'employeeId',
+                    message: 'Select the employee to update:',
+                    choices: employees.map(employee => ({
+                        name: `${employee.first_name} ${employee.last_name}`,
+                        value: employee.id
+                    }))
+                },
+                {
+                    type: 'list',
+                    name: 'roleId',
+                    message: 'Select the new role for the employee:',
+                    choices: roles.map(role => ({
+                    name: role.title,
+                    value: role.id
+                }))
             }
-          ])
-          .then(answers => {
-            db.query(
-              'UPDATE employee SET role_id = ? WHERE id = ?',
-              [answers.roleId, answers.employeeId],
-              (err, result) => {
+        ]).then(answers => {
+            db.query('UPDATE employee SET role_id = ? WHERE id = ?',
+            [answers.roleId, answers.employeeId],
+            (err, result) => {
                 if (err) throw err;
                 console.log('Employee role updated successfully!');
                 userPrompts();
-              }
-            );
-          });
-      });
+            });
+        });
     });
-  }
-
-
-
+});
+}
   
