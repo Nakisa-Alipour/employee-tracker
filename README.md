@@ -28,7 +28,7 @@ To install and run the Employee Tracker application, follow these steps:
 1. Clone the repository to your local machine.
 2. Navigate to the project's root directory.
 3. Install the required dependencies by running the following command: `npm install` and `npm i inquirer@8.2.4`
-4. Ensure you have MySQL installed and running on your system and also add your *mysql password* in index.js file before running the application.
+4. Ensure you have MySQL installed and running on your system and also add your **mysql password** in index.js file before running the application.
 5. Modify the database connection details in the `index.js` file to match your MySQL configuration (host, user, password, database).
 6. Run the application using the following command: `node index.js`
 
