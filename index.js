@@ -1,18 +1,22 @@
-const { prompt } = require('inquirer');
-//const mysql = require('./db');
 
+// Import required modules
+const { prompt } = require('inquirer');
 const mysql = require('mysql2');
 
+
+// Create a connection to the MySQL database
 const db = mysql.createConnection(
     {
       host: 'localhost',
       user: 'root',
-      password: 'NakiSql#77',
+      password: '',
       database: 'employee_db'
     },
     console.log(`Connected to the books_db database.`)
 );
 
+
+// Connect to the database and start the application
 db.connect(function(err) {
     if (err) throw err;
     console.log('Connected to the employee_db database.');
@@ -20,6 +24,7 @@ db.connect(function(err) {
 });
 
 
+// Function to prompt the user for actions
 function userPrompts() {
     prompt({
         type: "list",
@@ -72,6 +77,8 @@ function userPrompts() {
 
 }
 
+
+// Function to view all departments
 function viewAllDepartments() {
     db.query('SELECT * FROM department', (err, results) => {
         if (err) throw err;
@@ -80,7 +87,7 @@ function viewAllDepartments() {
     });
 }
 
-
+// Function to view all roles
 function viewAllRoles() {
     db.query('SELECT role.id, role.title, role.salary, department.name AS department FROM role INNER JOIN department ON role.department_id = department.id',
     (err, results) => {
@@ -90,6 +97,8 @@ function viewAllRoles() {
     });
 }
 
+
+// Function to view all employees
 function viewAllEmployees() {
     db.query(
       `SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager 
@@ -104,7 +113,7 @@ function viewAllEmployees() {
       });
 }
 
-
+// Function to add a department
 function addDepartment() {
     prompt({
       type: 'input',
@@ -119,6 +128,8 @@ function addDepartment() {
     });
   }
 
+
+// Function to add a role
 function addRole() {
     db.query('SELECT * FROM department', (err, departments) => {
         if (err) throw err;
@@ -155,7 +166,9 @@ function addRole() {
     });
 });
 }
-  
+
+
+// Function to add an employee
 function addEmployee() {
     db.query('SELECT * FROM role', (err, roles) => {
         if (err) throw err;
@@ -195,7 +208,9 @@ function addEmployee() {
         });
     });
 }
-  
+
+
+// Function to update employee role 
 function updateEmployeeRole() {
     db.query('SELECT * FROM employee', (err, employees) => {
         if (err) throw err;

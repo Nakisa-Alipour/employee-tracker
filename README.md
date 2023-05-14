@@ -9,16 +9,14 @@ The application provides a user-friendly interface through the command-line, all
 
 ## Walkthrough Video
 
-[![play image](https://user-images.githubusercontent.com/124220654/232980789-98efdcfd-579f-4389-a10f-8822b54bbeaa.jpg)](https://clipchamp.com/watch/Dne8sd75Qkl)
+[![play image](https://user-images.githubusercontent.com/124220654/232980789-98efdcfd-579f-4389-a10f-8822b54bbeaa.jpg)](https://clipchamp.com/watch/PSMBwZE59HE)
 
 
 ## Table of Contents
 
 - [Installation](#installation)
 - [Usage](#usage)
-- [Screenshots](#screenshots)
 - [Contributing](#contributing)
-- [License](#license)
 
 
 ## Installation
