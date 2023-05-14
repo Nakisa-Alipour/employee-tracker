@@ -9,7 +9,7 @@ The application provides a user-friendly interface through the command-line, all
 
 ## Walkthrough Video
 
-[![play image](https://user-images.githubusercontent.com/124220654/232980789-98efdcfd-579f-4389-a10f-8822b54bbeaa.jpg)](https://clipchamp.com/watch/PSMBwZE59HE)
+[![play image](https://user-images.githubusercontent.com/124220654/232980789-98efdcfd-579f-4389-a10f-8822b54bbeaa.jpg)](https://clipchamp.com/watch/tdpiP3eifSe)
 
 
 ## Table of Contents
